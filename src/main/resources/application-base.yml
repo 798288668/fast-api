@@ -1,0 +1,110 @@
+logging:
+  file:
+    path: logs/fast-api.log
+  level:
+    root: info
+    com.cheng.api: info
+
+management:
+  health:
+    probes:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  shutdown: graceful
+  port: 8080
+  servlet:
+    context-path: /api
+  tomcat:
+    basedir: /data/temp/
+    accept-count: 500
+    max-connections: 20000
+    max-swallow-size: 2MB
+    max-http-form-post-size: 2MB
+    threads:
+      max: 1000
+      min-spare: 50
+    remoteip:
+      protocol-header: X-Forwarded-Proto
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  main:
+    cloud-platform: kubernetes
+  application:
+    name: fast-api
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ACTUATOR_ADMIN
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    deserialization:
+      accept_empty_string_as_null_object: true
+      read_unknown_enum_values_as_null: true
+
+  redis:
+    database: 0
+    host: redis
+    password:
+    port: 6379
+    timeout: 2s
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/fast-api?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    schema: classpath:schema.sql
+    hikari:
+      pool-name: DatebookHikariCP
+
+# MyBatis
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: com.cheng.api.common.config.EnumPropertyTypeHandler
+
+mapper:
+  mappers:
+    - com.cheng.api.common.base.CommonMapper
+  not-empty: false
+  identity: MYSQL
+  use-simple-type: true
+  enum-as-simple-type: true
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+sys:
+  startCleanCache: false
+  fileUploadPath: /data/uploads/
+  fileAccessPath: http://test.3p4m.com/uploads/
+
+oss:
+  accessKeyId: LTAIV83YITENbF1m
+  accessKeySecret: VT7PuSW65dgubfagXVpn02DnAcjelZ
+  bucketName: freeepay-dev
+  fileDomain: http://freeepay-dev.oss-cn-beijing.aliyuncs.com/
+  endpoint: oss-cn-beijing.aliyuncs.com
+
+  roleArn: acs:ram::1078366465944885:role/aliyunosstokengeneratorrole
+  tokenExpireTime: 3600

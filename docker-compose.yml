@@ -1,0 +1,21 @@
+version: '3'
+services:
+  fin:
+    restart: always
+    environment:
+      - JAVA_OPTS=-XX:MaxRAM=2048m
+      - CONFIG_ENV=${CONFIG_ENV}
+    container_name: fast-api
+    image: registry.cn-hongkong.aliyuncs.com/api/fast-api:latest
+    build: .
+    volumes:
+      - /data/nginx/uploads/:/data/uploads/
+    ports:
+      - 8080:8080
+    networks:
+      - custom_net
+
+networks:
+  custom_net:
+    external:
+      name: app_net

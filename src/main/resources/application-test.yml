@@ -1,0 +1,18 @@
+spring:
+  redis:
+    host: redis
+    password:
+    port: 6379
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/fast-api?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+sys:
+  fileUploadPath: /data/uploads/
+  fileAccessPath: http://test.fast-api.com/uploads/
+
+oss:
+  bucketName: fast-api-test
+  fileDomain: http://fast-api.oss-cn-beijing.aliyuncs.com/
