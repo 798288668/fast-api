@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    height: 100vh;
+    background: rgb(242, 242, 242);
+}
+
+.app {
+    width: 650px;
+    padding: 15px 0;
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translateY(-20%) translateX(-50%);
+    font-size: 14px;
+    line-height: 1.5;
+    color: #666;
+    text-align: center;
+    background: #fff;
+}
+
+.app .tips {
+    color: #666;
+}
+
+.app .tips .time {
+    display: inline-block;
+    vertical-align: middle;
+    color: #fff;
+    padding: 0 2px;
+    border-radius: 2px;
+    background: rgb(2, 167, 240);
+}
+
+.app .tips-item {
+    line-height: 30px;
+}
+
+.app .important {
+    color: #f00;
+}
+
+.bank {
+    margin: 0 auto 20px;
+    box-sizing: border-box;
+    padding: 20px 40px;
+    width: 360px;
+    font-size: 0;
+    text-align: left;
+    background: rgb(242, 242, 242);
+    border-radius: 15px;
+}
+
+.bank-info-text, .bank-info-title {
+    line-height: 30px;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.qrcode .qrcode-img {
+    margin-top: 10px;
+}
+
+.qrcode-money {
+    font-size: 32px;
+    font-weight: bold;
+}

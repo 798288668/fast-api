@@ -2,7 +2,7 @@ package com.cheng.test;
 
 import com.cheng.api.common.util.ThreadPoolUtil;
 import com.cheng.test.base.SpringBaseTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.stream.IntStream;
 

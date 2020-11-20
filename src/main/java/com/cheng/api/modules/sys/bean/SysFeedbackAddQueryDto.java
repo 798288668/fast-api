@@ -4,12 +4,10 @@
 
 package com.cheng.api.modules.sys.bean;
 
-import com.cheng.api.common.constant.SysEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 反馈意见表(SysFeedback)实体类
@@ -65,21 +63,5 @@ public class SysFeedbackAddQueryDto implements Serializable {
 	 * 图片url
 	 */
 	private String url4;
-	/**
-	 * 状态（1:已处理,0:待处理)
-	 */
-	private SysEnum.FeedbackStatus status;
-	/**
-	 * 处理人id
-	 */
-	private String handlerId;
-	/**
-	 * 处理时间
-	 */
-	private Date handlerTime;
-	/**
-	 * 处理意见
-	 */
-	private String handlerInfo;
 
 }

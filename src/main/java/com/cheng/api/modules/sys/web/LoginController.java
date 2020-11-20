@@ -11,16 +11,18 @@ import com.cheng.api.common.constant.RedisConst;
 import com.cheng.api.common.constant.SysEnum;
 import com.cheng.api.common.security.JwtTokenUtil;
 import com.cheng.api.common.security.RequestLimit;
-import com.cheng.api.common.util.BeanMapper;
-import com.cheng.api.common.util.CaptchaUtils;
-import com.cheng.api.common.util.Encodes;
-import com.cheng.api.common.util.ThreadPoolUtil;
+import com.cheng.api.common.util.*;
 import com.cheng.api.modules.sys.bean.*;
 import com.cheng.api.modules.sys.service.SysUserService;
 import com.cheng.api.modules.sys.utils.UserUtils;
+import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,10 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
@@ -100,6 +99,20 @@ public class LoginController {
 		ImageIO.write((BufferedImage) image.get("image"), "JPEG", out);
 		out.close();
 
+	}
+
+	/**
+	 * 获取二维码
+	 */
+	@GetMapping("/getQrCode")
+	public ResponseEntity<byte[]> getQrCode(String inviterId, String platform) throws IOException, WriterException {
+		//二维码内的信息
+		String info = Servlets.getRequestPath() + "/register?inviterId=" + inviterId + "&platform=" + platform;
+		byte[] qrcode = QrCodeGenerator.getQrCodeImage(info, 360, 360);
+		// Set headers
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<>(qrcode, headers, HttpStatus.CREATED);
 	}
 
 	/**

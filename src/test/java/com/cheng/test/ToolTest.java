@@ -1,7 +1,7 @@
 package com.cheng.test;
 
 import com.cheng.test.base.BaseTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  *

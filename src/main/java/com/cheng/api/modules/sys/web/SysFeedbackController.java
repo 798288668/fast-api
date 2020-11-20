@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Validated
 @RestController
-@RequestMapping("/sys/")
+@RequestMapping("/sys/feedback/")
 public class SysFeedbackController {
 
 	private final SysFeedbackService sysFeedbackService;
@@ -39,8 +39,8 @@ public class SysFeedbackController {
 	/**
 	 * 联系客服
 	 */
-	@PostMapping("contact")
-	public Result contact(@Validated @RequestBody SysFeedbackAddQueryDto dto) {
+	@PostMapping("add")
+	public Result<String> add(@Validated @RequestBody SysFeedbackAddQueryDto dto) {
 		return sysFeedbackService.add(dto);
 	}
 

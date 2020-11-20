@@ -40,7 +40,6 @@ public class SysFeedbackServiceImpl implements SysFeedbackService {
 		SysFeedback feedback = BeanMapper.map(dto, SysFeedback.class);
 		feedback.preInsert(UserUtils.getUserId());
 		feedback.setStatus(SysEnum.FeedbackStatus.WAIT_DISPOSE);
-		feedback.setType(SysEnum.FeedbackType.CONTACT_US);
 		feedback.setUserId(feedback.getCreateBy());
 		sysFeedbackMapper.insertSelective(feedback);
 		return Result.success(feedback.getId());

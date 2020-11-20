@@ -1,29 +1,26 @@
 package com.cheng.test.base;
 
 import com.cheng.api.ApiApplication;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  *
  * @author fengcheng
  * @version 2020/6/29
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApiApplication.class})
 public class SpringBaseTest {
 
-	@Before
+	@BeforeEach
 	public void testBefore() {
 		System.out.println("SpringBootTest Start");
 		System.out.println("");
 		System.out.println("");
 	}
 
-	@After
+	@AfterEach
 	public void testAfter() {
 		System.out.println("");
 		System.out.println("");

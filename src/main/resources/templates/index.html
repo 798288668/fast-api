@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <meta charset="UTF-8"/>
-    <script src="http://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <script th:src="@{/static/jquery/jquery-2.1.4.min.js}"></script>
     <title>To You</title>
     <script>
         /* 鼠标点击特效 */
@@ -45,12 +45,18 @@
     </style>
 </head>
 <body style="background: #f5f5f5f5; overflow: hidden;">
+<div>
+    <a href="/api/getQrCode?inviterId=1&platform=4" target="_blank">获取注册二维码</a>
+    <a href="/api/register?inviterId=1&platform=4" target="_blank">注册</a>
+</div>
 <div class="middle-box">
+    <div>
         <pre style="line-height: 25px;color: #999999;font-size: 14px;">
 人终究会被年少不可得之物困扰一生
 我们穷极一生想要得到或许是别人的与生俱来
 人生不过如此，好好活着
         </pre>
+    </div>
 </div>
 </body>
 </html>
