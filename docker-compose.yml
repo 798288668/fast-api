@@ -7,7 +7,7 @@ services:
       - CONFIG_ENV=${CONFIG_ENV}
     container_name: fast-api
     image: registry.cn-hongkong.aliyuncs.com/api/fast-api:latest
-    build: .
+    build: ./system-service/
     volumes:
       - /data/nginx/uploads/:/data/uploads/
     ports:
