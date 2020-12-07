@@ -24,7 +24,7 @@ public class ModifyPassQueryDto implements Serializable {
 	 * 登录名
 	 */
 	@NotEmpty
-	@Pattern(regexp = RegexConst.NAME, message = "登录名格式不正确")
+	@Pattern(regexp = RegexConst.LOGIN_NAME, message = "登录名格式不正确")
 	private String loginName;
 	/**
 	 * 密码

@@ -27,8 +27,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fengcheng
@@ -64,18 +65,28 @@ public class GlobalExceptionHandler {
 	public Object methodArgumentNotValidException(Exception e) {
 		Result<Object> result = Result.fail(ResultCode.FAILD_PARAM);
 		List<FieldError> fieldErrors;
-		List<String> error = new ArrayList<>();
+		Map<String, String> error = new HashMap<>(16);
 		if (e instanceof BindException) {
 			fieldErrors = ((BindException) e).getBindingResult().getFieldErrors();
-			fieldErrors.forEach(x -> error.add("\"" + x.getField() + "\"" + x.getDefaultMessage()));
-		} else if (e instanceof MethodArgumentNotValidException) {
-			fieldErrors = ((MethodArgumentNotValidException) e).getBindingResult().getFieldErrors();
-			fieldErrors.forEach(x -> error.add("\"" + x.getField() + "\"" + x.getDefaultMessage()));
+			fieldErrors.forEach(x -> {
+				String value = error.get(x.getField());
+				if (value != null) {
+					error.put(x.getField(), value + " | " + x.getDefaultMessage());
+				} else {
+					error.put(x.getField(), x.getDefaultMessage());
+				}
+			});
 		} else if (e instanceof ConstraintViolationException) {
-			((ConstraintViolationException) e).getConstraintViolations()
-					.forEach(x -> error.add("\"" + x.getPropertyPath() + "\"" + x.getMessage()));
+			((ConstraintViolationException) e).getConstraintViolations().forEach(x -> {
+				String value = error.get(x.getPropertyPath().toString());
+				if (value != null) {
+					error.put(x.getPropertyPath().toString(), value + " | " + x.getMessage());
+				} else {
+					error.put(x.getPropertyPath().toString(), x.getMessage());
+				}
+			});
 		}
-		result.setMessage(ResultCode.FAILD_PARAM + "：" + String.join("，", error));
+		result.setMessage(ResultCode.FAILD_PARAM + "：" + error.toString());
 		return result;
 	}
 

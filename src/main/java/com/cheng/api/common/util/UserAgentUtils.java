@@ -4,6 +4,7 @@
 
 package com.cheng.api.common.util;
 
+import com.cheng.api.common.constant.SysConst;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.DeviceType;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -102,7 +103,7 @@ public class UserAgentUtils {
 		}
 		if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
 			ipAddress = request.getRemoteAddr();
-			if ("127.0.0.1".equals(ipAddress) || "0:0:0:0:0:0:0:1".equals(ipAddress)) {
+			if (SysConst.LOCAL_IP.equals(ipAddress) || "0:0:0:0:0:0:0:1".equals(ipAddress)) {
 				//根据网卡取本机配置的IP
 				InetAddress inet = null;
 				try {

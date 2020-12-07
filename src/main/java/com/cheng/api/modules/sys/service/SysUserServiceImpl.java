@@ -7,10 +7,7 @@ package com.cheng.api.modules.sys.service;
 import com.cheng.api.common.base.*;
 import com.cheng.api.common.constant.SysConst;
 import com.cheng.api.common.constant.SysEnum;
-import com.cheng.api.common.util.BeanMapper;
-import com.cheng.api.common.util.Encodes;
-import com.cheng.api.common.util.StringUtils;
-import com.cheng.api.common.util.UserAgentUtils;
+import com.cheng.api.common.util.*;
 import com.cheng.api.modules.sys.bean.*;
 import com.cheng.api.modules.sys.mapper.SysUserMapper;
 import com.cheng.api.modules.sys.utils.UserUtils;
@@ -20,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.Weekend;
+import tk.mybatis.mapper.weekend.WeekendCriteria;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,46 +80,46 @@ public class SysUserServiceImpl implements SysUserService {
 	public PageClient<SysUserListDto> getList(SysUserListQueryDto dto) {
 		SysUser current = UserUtils.getUser();
 
-		Example example = new Example(SysUser.class);
-		example.setOrderByClause("create_date DESC");
-		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("delFlag", BaseEntity.DEL_FLAG_NORMAL);
-
+		Weekend<SysUser> weekend = Weekend.of(SysUser.class);
+		weekend.orderBy("createDate").desc();
+		WeekendCriteria<SysUser, Object> criteria = weekend.weekendCriteria();
+		criteria.andEqualTo(DataEntity::getDelFlag, BaseEntity.DEL_FLAG_NORMAL);
 		if (current.getPlatform() != SysEnum.Platform.SYSTEM) {
 			List<String> userIds = getChildIdsById(current.getId());
 			dto.setUserIds(userIds);
 			if (userIds != null && !userIds.isEmpty()) {
-				criteria.andIn("id", userIds);
+				criteria.andIn(SysUser::getId, userIds);
 			}
 		}
 		if (StringUtils.isNotBlank(dto.getParentName())) {
-			Example parent = new Example(SysUser.class);
-			parent.createCriteria().andLike("userName", "%" + dto.getParentName() + "%");
-			List<SysUser> parents = sysUserMapper.selectByExample(parent);
+			List<SysUser> parents = sysUserMapper.selectByExample(Weekend.of(SysUser.class).weekendCriteria()
+					.andEqualTo(SysUser::getUserName, SqlUtil.asLikeStr(dto.getParentName())));
 			if (parents != null && !parents.isEmpty()) {
-				criteria.andIn("parentId", parents.stream().map(BaseEntity::getId).collect(Collectors.toList()));
+				criteria.andIn(SysUser::getParentId,
+						parents.stream().map(BaseEntity::getId).collect(Collectors.toList()));
 			}
 		}
 		if (StringUtils.isNotBlank(dto.getUserName())) {
-			criteria.andLike("userName", "%" + dto.getUserName() + "%");
+			criteria.andLike(SysUser::getUserName, SqlUtil.asLikeStr(dto.getUserName()));
 		}
 		if (dto.getUserType() != null) {
-			criteria.andEqualTo("userType", dto.getUserType());
+			criteria.andEqualTo(SysUser::getUserType, dto.getUserType());
 		}
 		if (dto.getPlatform() != null) {
-			criteria.andEqualTo("platform", dto.getPlatform());
+			criteria.andEqualTo(SysUser::getPlatform, dto.getPlatform());
 		}
 		if (dto.getPlatforms() != null) {
-			criteria.andIn("platform", dto.getPlatforms());
+			criteria.andIn(SysUser::getPlatform, dto.getPlatforms());
 		}
 		if (dto.getUserStatus() != null) {
-			criteria.andEqualTo("userStatus", dto.getUserStatus());
+			criteria.andEqualTo(SysUser::getUserStatus, dto.getUserStatus());
 		}
 		if (!Objects.equals(current.getId(), SysConst.USER_SUP_ID)) {
-			criteria.andNotIn("id", Lists.newArrayList(SysConst.USER_SUP_ID, SysConst.USER_ADMIN_ID));
+			criteria.andNotIn(SysUser::getId, Lists.newArrayList(SysConst.USER_SUP_ID, SysConst.USER_ADMIN_ID));
 		}
+
 		dto.startPage();
-		List<SysUser> users = sysUserMapper.selectByExample(example);
+		List<SysUser> users = sysUserMapper.selectByExample(weekend);
 		return PageClient.of(users, SysUserListDto.class);
 	}
 
@@ -169,7 +168,7 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserMapper.insertUserRole(user.getId(), roleId.split(","));
 
 		Result<String> result = Result.success();
-		result.setMessage("提交成功，请等待客服处理！");
+		result.setMessage(SysConst.SUCCESS_WAIT);
 		return result;
 	}
 
@@ -200,7 +199,7 @@ public class SysUserServiceImpl implements SysUserService {
 			if (StringUtils.isNotBlank(user.getPassword())) {
 				password = Encodes.encryptPassword(user.getPassword());
 			} else {
-				password = Encodes.encryptPassword("000000");
+				password = Encodes.encryptPassword(SysConst.DEFAULT_PASSWORD);
 			}
 
 			if (current.getPlatform() == SysEnum.Platform.FIRST_AGENT
@@ -229,9 +228,12 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUser.setPassword(Encodes.encryptPassword(password));
 		sysUser.setUpdateDate(new Date());
 		sysUser.setLastPasswordResetDate(new Date());
-		Example example = new Example(SysUser.class);
-		example.createCriteria().andEqualTo("loginName", loginName);
-		sysUserMapper.updateByExampleSelective(sysUser, example);
+
+		Weekend<SysUser> weekend = Weekend.of(SysUser.class);
+		WeekendCriteria<SysUser, Object> criteria = weekend.weekendCriteria();
+		criteria.andEqualTo(SysUser::getLoginName, loginName);
+		sysUserMapper.updateByExampleSelective(sysUser, weekend);
+
 		UserUtils.clearUserCache(user.getId());
 	}
 
@@ -280,7 +282,7 @@ public class SysUserServiceImpl implements SysUserService {
 	public Result<String> reset(String id) {
 		SysUser user = new SysUser();
 		user.setId(id);
-		user.setPassword(Encodes.encryptPassword("000000"));
+		user.setPassword(Encodes.encryptPassword(SysConst.DEFAULT_PASSWORD));
 		sysUserMapper.updateByPrimaryKeySelective(user);
 		UserUtils.clearUserCache(id);
 		return Result.success(id);

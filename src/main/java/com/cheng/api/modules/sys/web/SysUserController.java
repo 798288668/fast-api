@@ -67,11 +67,7 @@ public class SysUserController {
 	@PostMapping("add")
 	@PreAuthorize("hasAuthority('" + MenuConst.SYS_USER_ADD + "')")
 	public Result<String> add(@Validated @RequestBody SysUserAddQueryDto dto) {
-		if (StringUtils.isEmpty(dto.getRoleId())) {
-			Result<Object> result = Result.fail(ResultCode.FAILD_PARAM);
-			result.setData(Collections.singletonMap("roleId", "不能为空"));
-		}
-		dto.setUserType(SysEnum.UserType.ADMIN);
+//		dto.setUserType(SysEnum.UserType.ADMIN);
 		dto.setPlatform(SysEnum.Platform.SYSTEM);
 		return sysUserService.add(dto);
 	}

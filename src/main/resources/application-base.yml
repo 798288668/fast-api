@@ -55,6 +55,8 @@ spring:
     deserialization:
       accept_empty_string_as_null_object: true
       read_unknown_enum_values_as_null: true
+    parser:
+      ALLOW_COMMENTS: true
 
   redis:
     database: 0

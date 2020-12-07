@@ -8,7 +8,7 @@ public class RedisConst {
 	private RedisConst() {
 	}
 
-	public static final String PREFIX = "admin.";
+	public static final String PREFIX = "api.admin.";
 
 	public static final String USER_LOGIN_NAME = PREFIX + "userLoginName.";
 	public static final String USER_LOGIN_TOKEN = PREFIX + "userLoginToken.";

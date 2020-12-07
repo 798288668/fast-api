@@ -31,7 +31,7 @@ public class SysUserH5AddQueryDto implements Serializable {
 	/**
 	 * 登录名
 	 */
-	@Pattern(regexp = RegexConst.NAME, message = "登录名格式不正确")
+	@Pattern(regexp = RegexConst.LOGIN_NAME, message = "登录名格式不正确")
 	private String loginName;
 	/**
 	 * 密码
@@ -41,7 +41,7 @@ public class SysUserH5AddQueryDto implements Serializable {
 	/**
 	 * 姓名
 	 */
-	@Pattern(regexp = RegexConst.NAME, message = "姓名格式不正确")
+	@Pattern(regexp = RegexConst.USER_NAME, message = "姓名格式不正确")
 	private String userName;
 	/**
 	 * 联系电话

@@ -11,9 +11,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SysConst {
 
+	public static final String SUCCESS_WAIT = "提交成功，请等待客服处理！";
+	public static final String DEFAULT_PASSWORD = "000000";
+	public static final String LOCAL_IP = "127.0.0.1";
+
 	public static final String HTTP = "http";
 	public static final String HTTPS = "https";
 	public static final String DOT = ".";
+	public static final String COMMA = ",";
 
 	public static final String MAX_MONEY_STR = "999999999";
 	public static final String MIN_MONEY_STR = "0.01";
@@ -26,4 +31,6 @@ public class SysConst {
 	public static final String USER_SUP_ID = "0";
 	public static final String ROLE_FIRST_AGENT = "id_firstAgent";
 	public static final String ROLE_SECOND_AGENT = "id_secondAgent";
+
+
 }

@@ -15,9 +15,14 @@ public class RegexConst {
 	public static final String PHONE = "^((1[0-9]{1})+\\d{9})$";
 
 	/**
-	 * 新用户名规则：支持字母、数字、汉字、_、-五种符号中一种或多种类型的组合，不区分字母大小写
+	 * 登录名：支持字母、数字、汉字、_、-五种符号中一种或多种类型的组合，不区分字母大小写
 	 */
-	public static final String NAME = "^(?=.*[A-Za-z\\u4e00-\\u9fa5\\-\\_])[A-Za-z\\u4e00-\\u9fa5\\-\\_0-9]{2,20}";
+	public static final String LOGIN_NAME = "^(?=.*[A-Za-z\\-\\_0-9])[A-Za-z\\-\\_0-9]{2,20}";
+
+	/**
+	 * 姓名：支持字母、汉字中一种或多种类型的组合，不区分字母大小写
+	 */
+	public static final String USER_NAME = "^(?=.*[A-Za-z\\u4e00-\\u9fa5])[A-Za-z\\u4e00-\\u9fa5]{2,20}";
 
 	/**
 	 * 登录密码

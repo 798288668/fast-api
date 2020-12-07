@@ -13,6 +13,7 @@ spring:
     password: root
 
 sys:
+  startCleanCache: true
   fileUploadPath: /Users/fengcheng/data/uploads/
   fileAccessPath: http://127.0.0.1/uploads/
 

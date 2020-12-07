@@ -47,7 +47,7 @@ public class SysFeedbackController {
 	/**
 	 * 联系客服
 	 */
-	@PostMapping("feedback/list")
+	@PostMapping("list")
 	@PreAuthorize("hasAuthority('" + MenuConst.SYS_FEEDBACK_LIST + "')")
 	public Result<PageClient<SysFeedbackDto>> list(@Validated @RequestBody SysFeedbackListQueryDto dto) {
 		String userId = UserUtils.getUserId();
@@ -66,7 +66,7 @@ public class SysFeedbackController {
 	/**
 	 * 处理
 	 */
-	@PostMapping("feedback/dispose")
+	@PostMapping("dispose")
 	@PreAuthorize("hasAuthority('" + MenuConst.SYS_FEEDBACK_DISPOSE + "')")
 	public Result<String> dispose(@Validated @RequestBody SysFeedbackDisposeQueryDto dto) {
 		return sysFeedbackService.dispose(dto);

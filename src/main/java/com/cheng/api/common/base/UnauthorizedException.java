@@ -13,18 +13,8 @@ package com.cheng.api.common.base;
 public class UnauthorizedException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	public UnauthorizedException() {
-	}
-
-	public UnauthorizedException(Throwable cause) {
-		super(cause);
-	}
-
 	public UnauthorizedException(String message) {
 		super(message);
 	}
 
-	public UnauthorizedException(String message, Throwable cause) {
-		super(message, cause);
-	}
 }

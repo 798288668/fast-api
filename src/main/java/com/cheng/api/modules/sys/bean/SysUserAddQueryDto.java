@@ -10,6 +10,7 @@ import com.cheng.api.common.constant.SysEnum;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
@@ -27,7 +28,7 @@ public class SysUserAddQueryDto implements Serializable {
 	 * 登录名
 	 */
 	@NotEmpty
-	@Pattern(regexp = RegexConst.NAME, message = "登录名格式不正确")
+	@Pattern(regexp = RegexConst.LOGIN_NAME, message = "登录名格式不正确")
 	private String loginName;
 	/**
 	 * 密码
@@ -37,11 +38,12 @@ public class SysUserAddQueryDto implements Serializable {
 	 * 姓名
 	 */
 	@NotEmpty
-	@Pattern(regexp = RegexConst.NAME, message = "姓名格式不正确")
+	@Pattern(regexp = RegexConst.USER_NAME, message = "姓名格式不正确")
 	private String userName;
 	/**
 	 * 角色Id
 	 */
+	@NotEmpty
 	private String roleId;
 	/**
 	 * 联系电话
@@ -50,6 +52,7 @@ public class SysUserAddQueryDto implements Serializable {
 	/**
 	 * 用户类型
 	 */
+	@NotNull
 	private SysEnum.UserType userType;
 	/**
 	 * 平台
